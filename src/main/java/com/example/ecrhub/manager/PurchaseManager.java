@@ -1,6 +1,7 @@
 package com.example.ecrhub.manager;
 
 
+import com.codepay.register.sdk.model.request.QueryRequest;
 import com.codepay.register.sdk.model.response.CloseResponse;
 import com.codepay.register.sdk.model.response.PurchaseResponse;
 import com.codepay.register.sdk.model.response.QueryResponse;
@@ -23,6 +24,8 @@ public class PurchaseManager {
 
     private QueryResponse queryResponse;
 
+    private QueryRequest queryRequest;
+
     private RefundResponse refundResponse;
 
     private CloseResponse closeResponse;
@@ -31,7 +34,7 @@ public class PurchaseManager {
 
     private Label merchant_order_no;
 
-    public static PurchaseManager getInstance() {
+    public static synchronized PurchaseManager getInstance() {
         if (instance == null) {
             instance = new PurchaseManager();
         }
@@ -60,6 +63,14 @@ public class PurchaseManager {
 
     public void setQueryResponse(QueryResponse queryResponse) {
         this.queryResponse = queryResponse;
+    }
+
+    public QueryRequest getQueryRequest() {
+        return queryRequest;
+    }
+
+    public void setQueryRequest(QueryRequest queryRequest) {
+        this.queryRequest = queryRequest;
     }
 
     public CloseResponse getCloseResponse() {

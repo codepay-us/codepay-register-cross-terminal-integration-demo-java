@@ -28,6 +28,7 @@ import java.util.List;
 public class QueryResponseController {
 
     public Button queryButton;
+    //    public TextArea request_info;
     @FXML
     private Button returnButton;
     public TextField trans_amount;
@@ -43,9 +44,11 @@ public class QueryResponseController {
     public void initialize() {
 
         QueryResponse queryResponse = PurchaseManager.getInstance().getQueryResponse();
+//        QueryRequest queryRequest = PurchaseManager.getInstance().getQueryRequest();
         if (queryResponse != null){
             trans_amount.setText(queryResponse.getOrder_amount());
             merchant_order_no.setText(queryResponse.getMerchant_order_no());
+//            request_info.setText(JSONFormatUtil.formatJson(queryRequest));
             response_info.setText(JSONFormatUtil.formatJson(queryResponse));
         }
     }
@@ -57,6 +60,7 @@ public class QueryResponseController {
             task.cancel();
         }
         PurchaseManager.getInstance().setQueryResponse(null);
+//        PurchaseManager.getInstance().setQueryRequest(null);
         SceneManager.getInstance().loadScene("shopping", "/com/example/ecrhub/fxml/shopping.fxml");
         SceneManager.getInstance().switchScene("shopping");
     }
@@ -74,16 +78,25 @@ public class QueryResponseController {
         task = new Task<String>() {
             @Override
             protected String call() throws Exception {
+                progress_indicator.setVisible(true);
+                wait_label.setVisible(true);
+                queryButton.setDisable(true);
                 PurchaseManager.getInstance().setQueryResponse(Query());
                 return "success";
             }
         };
         task.setOnSucceeded(success -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            queryButton.setDisable(false);
             SceneManager.getInstance().loadScene("queryResponse", "/com/example/ecrhub/fxml/queryResponse.fxml");
             SceneManager.getInstance().switchScene("queryResponse");
         });
 
         task.setOnFailed(fail -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            queryButton.setDisable(false);
             alert.setContentText("connect error!");
             alert.showAndWait();
         });
@@ -91,6 +104,7 @@ public class QueryResponseController {
         task.setOnCancelled(cancel -> {
             progress_indicator.setVisible(false);
             wait_label.setVisible(false);
+            queryButton.setDisable(false);
             PurchaseManager.getInstance().setQueryResponse(null);
         });
 
@@ -119,6 +133,7 @@ public class QueryResponseController {
             request.setMerchant_order_no(origMerchantOrderNo);
             System.out.println("Query request:" + request);
             QueryResponse queryResponse = client.execute(request);
+//            PurchaseManager.getInstance().setQueryRequest(request);
             System.out.println("Query response:" + queryResponse);
             queryResponses.add(queryResponse);
 //            return queryResponse;

@@ -26,6 +26,7 @@ import java.util.*;
 public class RefundResponseController {
 
     public Button refundButton;
+    public TextField orig_merchant_order_no;
     @FXML
     private Button returnButton;
     public TextField trans_amount;
@@ -43,15 +44,14 @@ public class RefundResponseController {
 
     public void initialize() {
         RefundResponse refundResponse = PurchaseManager.getInstance().getRefundResponse();
+        orig_merchant_order_no.setText(null);
         merchant_order_no.setText(null);
         response_info.setText(null);
         trans_amount.setText(null);
         if (refundResponse != null) {
             trans_amount.setText(refundResponse.getOrder_amount());
-            merchant_order_no.setText(refundResponse.getMerchant_order_no());
+            orig_merchant_order_no.setText(refundResponse.getMerchant_order_no());
             response_info.setText(JSONFormatUtil.formatJson(refundResponse));
-        } else {
-            return;
         }
     }
 
@@ -69,9 +69,9 @@ public class RefundResponseController {
     private void handleRefundButtonAction(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR!");
-        String merchantOrderNo = merchant_order_no.getText();
-        if (StrUtil.isEmpty(merchantOrderNo)) {
-            alert.setContentText("Please enter merchant_order_no");
+        String origMerchantOrderNo = orig_merchant_order_no.getText();
+        if (StrUtil.isEmpty(origMerchantOrderNo)) {
+            alert.setContentText("Please enter orig_merchant_order_no");
             alert.showAndWait();
             return;
         }
@@ -79,22 +79,34 @@ public class RefundResponseController {
         task = new Task<String>() {
             @Override
             protected String call() throws Exception {
+                progress_indicator.setVisible(true);
+                wait_label.setVisible(true);
+                refundButton.setDisable(true);
                 PurchaseManager.getInstance().setRefundResponse(refund());
                 return "success";
             }
         };
 
         task.setOnSucceeded(success -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            refundButton.setDisable(false);
             SceneManager.getInstance().loadScene("refundResponse", "/com/example/ecrhub/fxml/refundResponse.fxml");
             SceneManager.getInstance().switchScene("refundResponse");
         });
 
         task.setOnFailed(fail -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            refundButton.setDisable(false);
             alert.setContentText("connect error!");
             alert.showAndWait();
         });
 
         task.setOnCancelled(cancel -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            refundButton.setDisable(false);
             PurchaseManager.getInstance().setRefundResponse(null);
         });
 
@@ -113,7 +125,7 @@ public class RefundResponseController {
             client = clientList.get(terminalBox.getValue()).getClient();
         }
 
-        String[] origMerchantOrderNumbers = merchant_order_no.getText().split(",");
+        String[] origMerchantOrderNumbers = orig_merchant_order_no.getText().split(",");
         System.out.println(Arrays.toString(origMerchantOrderNumbers));
 
         List<RefundResponse> refundResponses = new ArrayList<>();
@@ -125,17 +137,20 @@ public class RefundResponseController {
             System.out.println("Refund response:" + refundResponse);
             refundResponses.add(refundResponse);
         }
-
         // 返回最后一个响应
         return refundResponses.isEmpty() ? null : refundResponses.get(refundResponses.size() - 1);
     }
 
     private RefundRequest createRefundRequest(String origMerchantOrderNo) {
+        String MerchantOrderNo = "C" + origMerchantOrderNo;
+        if (merchant_order_no.getText() != null) {
+            MerchantOrderNo = merchant_order_no.getText();
+        }
         RefundRequest request = new RefundRequest();
         request.setApp_id(CommonConstant.APP_ID);
         request.setOrig_merchant_order_no(origMerchantOrderNo);
-        request.setMerchant_order_no("C" + origMerchantOrderNo);
-//        request.setMerchant_order_no("C" + new Date().getTime() + RandomUtil.randomNumbers(4));
+        request.setMerchant_order_no(MerchantOrderNo);
         return request;
     }
+
 }

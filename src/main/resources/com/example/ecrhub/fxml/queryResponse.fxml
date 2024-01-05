@@ -8,30 +8,36 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <children>
-       <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
-           <Label minWidth="150" text="Merchant order number: " />
-           <TextField fx:id="merchant_order_no" prefHeight="26.0" prefWidth="400.0" />
-       </HBox>
-       <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
-           <Label minWidth="150" text="Trans Amount: " />
-           <TextField fx:id="trans_amount" disable="true" prefHeight="26.0" prefWidth="200.0" />
-       </HBox>
-       <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
-           <Label minWidth="150" text="Response information: " />
-           <ScrollPane fitToWidth="true" fitToHeight="true">
+    <children>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
+            <Label minWidth="150" text="Merchant order number: " />
+            <TextField fx:id="merchant_order_no" prefHeight="26.0" prefWidth="400.0" />
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
+            <Label minWidth="150" text="Trans Amount: " />
+            <TextField fx:id="trans_amount" disable="true" prefHeight="26.0" prefWidth="200.0" />
+        </HBox>
+        <!--       <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_RIGHT">-->
+        <!--           <Label minWidth="150" text="Request information: " />-->
+        <!--           <ScrollPane fitToWidth="true" fitToHeight="true">-->
+        <!--               <TextArea prefHeight="300.0" editable="false" wrapText="true" prefWidth="400.0" fx:id="request_info"/>-->
+        <!--           </ScrollPane>-->
+        <!--       </HBox>-->
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
+            <Label minWidth="150" text="Response information: " />
+            <ScrollPane fitToWidth="true" fitToHeight="true">
                 <TextArea prefHeight="300.0" editable="false" wrapText="true" prefWidth="400.0" fx:id="response_info"/>
-           </ScrollPane>
-       </HBox>
-       <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
-           <ProgressIndicator  fx:id="progress_indicator" visible="false"/>
-       </HBox>
-       <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
-           <Label  text="Please wait..." fx:id="wait_label" visible="false"/>
-       </HBox>
-       <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
-           <Button fx:id="returnButton" mnemonicParsing="false" onAction="#queryReturnButtonAction" text="Back" />
-           <Button fx:id="queryButton" mnemonicParsing="false" onAction="#handleQueryButtonAction" text="Query" />
-       </HBox>
-   </children>
+            </ScrollPane>
+        </HBox>
+        <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
+            <ProgressIndicator  fx:id="progress_indicator" visible="false"/>
+        </HBox>
+        <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
+            <Label  text="Please wait..." fx:id="wait_label" visible="false"/>
+        </HBox>
+        <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
+            <Button fx:id="returnButton" mnemonicParsing="false" onAction="#queryReturnButtonAction" text="Back" />
+            <Button fx:id="queryButton" mnemonicParsing="false" onAction="#handleQueryButtonAction" text="Query" />
+        </HBox>
+    </children>
 </VBox>

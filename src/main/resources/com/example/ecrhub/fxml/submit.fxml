@@ -9,47 +9,47 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <children>
-       <HBox fx:id="order" alignment="CENTER_LEFT" visible="false" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
-           <Label alignment="CENTER_RIGHT" minWidth="180" text="Order No: " />
-           <Label fx:id="merchant_order_no" prefHeight="26.0" prefWidth="200.0">
-           </Label>
-       </HBox>
-       <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
-           <Label alignment="CENTER_RIGHT" minWidth="180" text="Device sn: " />
-           <Label fx:id="terminal_sn" prefHeight="26.0" prefWidth="200.0">
-               <font>
-                   <Font size="20.0" />
-               </font>
-           </Label>
-           <ChoiceBox fx:id="terminalBox" prefWidth="150.0"/>
-       </HBox>
-       <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
-           <Label alignment="CENTER_RIGHT" minWidth="180" text="Trans Amount: " />
-           <Label fx:id="trans_amount" prefHeight="26.0" prefWidth="200.0">
-               <font>
-                   <Font size="20.0" />
-               </font>
-           </Label>
-       </HBox>
-       <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
-           <Label alignment="CENTER_RIGHT" minWidth="180" text="Payment method category: "/>
-           <ChoiceBox fx:id="pay_method_category_choice" minWidth="100.0" />
-       </HBox>
-       <HBox fx:id="pay_method"  visible="false" alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
-           <Label alignment="CENTER_RIGHT" minWidth="180" text="Payment method id: "/>
-           <ChoiceBox fx:id="pay_method_id_choice"  minWidth="100.0" />
-       </HBox>
-       <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
+    <children>
+        <HBox fx:id="order" alignment="CENTER_LEFT" visible="false" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
+            <Label alignment="CENTER_RIGHT" minWidth="180" text="Order No: " />
+            <Label fx:id="merchant_order_no" prefHeight="26.0" prefWidth="200.0">
+            </Label>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
+            <Label alignment="CENTER_RIGHT" minWidth="180" text="Device sn: " />
+            <Label fx:id="terminal_sn" prefHeight="26.0" prefWidth="200.0">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Label>
+            <ChoiceBox fx:id="terminalBox" prefWidth="150.0"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
+            <Label alignment="CENTER_RIGHT" minWidth="180" text="Trans Amount: " />
+            <TextField fx:id="trans_amount" prefHeight="26.0" prefWidth="200.0">
+                <font>
+                    <Font size="15.0" />
+                </font>
+            </TextField>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
+            <Label alignment="CENTER_RIGHT" minWidth="180" text="Payment method category: "/>
+            <ChoiceBox fx:id="pay_method_category_choice" minWidth="100.0" />
+        </HBox>
+        <HBox fx:id="pay_method"  visible="false" alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
+            <Label alignment="CENTER_RIGHT" minWidth="180" text="Payment method id: "/>
+            <ChoiceBox fx:id="pay_method_id_choice"  minWidth="100.0" />
+        </HBox>
+        <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
             <ProgressIndicator  fx:id="progress_indicator" />
-       </HBox>
-       <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
-           <Label  text="Please wait..." fx:id="wait_label"/>
-       </HBox>
-       <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
-           <Button mnemonicParsing="false" onAction="#handleReturnButtonAction" text="Back" />
-           <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleCloseButtonAction" text="Close" />
-           <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Submit" />
-       </HBox>
-   </children>
+        </HBox>
+        <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
+            <Label  text="Please wait..." fx:id="wait_label"/>
+        </HBox>
+        <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
+            <Button mnemonicParsing="false" onAction="#handleReturnButtonAction" text="Back" />
+            <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleCloseButtonAction" text="Close" />
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Submit" />
+        </HBox>
+    </children>
 </VBox>
