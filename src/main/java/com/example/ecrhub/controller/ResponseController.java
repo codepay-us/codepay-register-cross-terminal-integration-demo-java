@@ -1,6 +1,6 @@
 package com.example.ecrhub.controller;
 
-import com.codepay.register.sdk.model.response.PurchaseResponse;
+import com.codepay.register.sdk.model.response.SaleResponse;
 import com.example.ecrhub.manager.PurchaseManager;
 import com.example.ecrhub.manager.SceneManager;
 import com.example.ecrhub.util.JSONFormatUtil;
@@ -22,7 +22,7 @@ public class ResponseController {
     public TextArea response_info;
 
     public void initialize() {
-        PurchaseResponse response = PurchaseManager.getInstance().getResponse();
+        SaleResponse response = PurchaseManager.getInstance().getResponse();
         if (response == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR!");

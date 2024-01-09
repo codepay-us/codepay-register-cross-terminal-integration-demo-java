@@ -68,8 +68,8 @@ public class UsbController {
                 connect_info.setManaged(false);
                 try {
                     ECRHubClient client = ECRHubClientManager.getInstance().getClient();
-                    ECRHubResponse ecrHubResponse = client.connect2();
-                    return JSON.toJSONString(ecrHubResponse);
+                    client.connect();
+                    return JSON.toJSONString(new JSONObject());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw e;

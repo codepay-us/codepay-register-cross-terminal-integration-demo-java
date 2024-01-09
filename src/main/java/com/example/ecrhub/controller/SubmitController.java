@@ -5,9 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import com.codepay.register.sdk.ECRHubClient;
 import com.codepay.register.sdk.ECRHubConfig;
 import com.codepay.register.sdk.model.request.CloseRequest;
-import com.codepay.register.sdk.model.request.PurchaseRequest;
+import com.codepay.register.sdk.model.request.SaleRequest;
 import com.codepay.register.sdk.model.response.CloseResponse;
-import com.codepay.register.sdk.model.response.PurchaseResponse;
+import com.codepay.register.sdk.model.response.SaleResponse;
 import com.example.ecrhub.constant.CommonConstant;
 import com.example.ecrhub.manager.ECRHubClientManager;
 import com.example.ecrhub.manager.PurchaseManager;
@@ -67,11 +67,6 @@ public class SubmitController {
         ECRHubClientManager instance = ECRHubClientManager.getInstance();
         if (1 == instance.getConnectType()) {
             // 串口连接初始化页面
-            if (instance.getConnect_info().getDevice_data() != null) {
-                terminal_sn.setText(instance.getConnect_info().getDevice_data().getDevice_sn());
-            } else {
-                terminal_sn.setText("Unknown");
-            }
             terminalBox.setVisible(false);
             terminalBox.setManaged(false);
         } else {
@@ -100,16 +95,16 @@ public class SubmitController {
         } else {
             trans_amount.setText(PurchaseManager.getInstance().getTrans_amount().getText());
         }
-        pay_method_category_choice.getItems().addAll("BANKCARD", "QR_C_SCAN_B", "QR_B_SCAN_C");
-        pay_method_category_choice.setValue("BANKCARD");
+        pay_method_category_choice.getItems().addAll("SWIPE_CARD", "SCANQR_PAY", "BSCANQR_PAY");
+        pay_method_category_choice.setValue("SWIPE_CARD");
 
         pay_method_id_choice.getItems().addAll("PAYNOW", "Alipay", "Smart Ví", "Alipay+", "WecatPay");
         pay_method_id_choice.setValue("PAYNOW");
 
         // 添加监听器
         pay_method_category_choice.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if ("QR_C_SCAN_B".equals(newValue)) {
-                // 当值为"QR_C_SCAN_B"时，显示pay_method_id_choice
+            if ("SCANQR_PAY".equals(newValue)) {
+                // 当值为"SCANQR_PAY"时，显示pay_method_id_choice
                 pay_method.setVisible(true);
                 pay_method.setManaged(true);
             } else {
@@ -248,7 +243,7 @@ public class SubmitController {
         return closeResponse;
     }
 
-    private PurchaseResponse requestToECR(String amount_str) throws Exception {
+    private SaleResponse requestToECR(String amount_str) throws Exception {
         ECRHubClientManager instance = ECRHubClientManager.getInstance();
         // 设备选择
         ECRHubClient client;
@@ -260,16 +255,16 @@ public class SubmitController {
         }
 
         // Purchase
-        PurchaseRequest request = new PurchaseRequest();
+        SaleRequest request = new SaleRequest();
         request.setApp_id(CommonConstant.APP_ID);
         request.setMerchant_order_no("DEMO" + new Date().getTime() + RandomUtil.randomNumbers(4));
         request.setOrder_amount(amount_str);
-        request.setPay_method_category(pay_method_category_choice.getValue());
+        request.setPay_scenario(pay_method_category_choice.getValue());
         ECRHubConfig requestConfig = new ECRHubConfig();
         requestConfig.getSerialPortConfig().setReadTimeout(150000);
         request.setConfig(requestConfig);
 
-        if ("QR_C_SCAN_B".equals(request.getPay_method_category())) {
+        if ("SCANQR_PAY".equals(request.getPay_scenario())) {
             request.setPay_method_id(pay_method_id_choice.getValue());//Alipay PAYNOW
         }
 
@@ -279,7 +274,7 @@ public class SubmitController {
             Platform.runLater(() -> {
                 merchant_order_no.setText(request.getMerchant_order_no());
             });
-            PurchaseResponse response = client.execute(request);
+            SaleResponse response = client.execute(request);
             System.out.println("Purchase Response:" + response);
             return response;
         } catch (Exception e) {

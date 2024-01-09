@@ -3,7 +3,7 @@ package com.example.ecrhub.manager;
 
 import com.codepay.register.sdk.model.request.QueryRequest;
 import com.codepay.register.sdk.model.response.CloseResponse;
-import com.codepay.register.sdk.model.response.PurchaseResponse;
+import com.codepay.register.sdk.model.response.SaleResponse;
 import com.codepay.register.sdk.model.response.QueryResponse;
 import com.codepay.register.sdk.model.response.RefundResponse;
 import javafx.scene.control.Label;
@@ -20,7 +20,7 @@ public class PurchaseManager {
 
     private static PurchaseManager instance;
 
-    private PurchaseResponse response;
+    private SaleResponse response;
 
     private QueryResponse queryResponse;
 
@@ -41,11 +41,11 @@ public class PurchaseManager {
         return instance;
     }
 
-    public PurchaseResponse getResponse() {
+    public SaleResponse getResponse() {
         return response;
     }
 
-    public void setResponse(PurchaseResponse response) {
+    public void setResponse(SaleResponse response) {
         this.response = response;
     }
 

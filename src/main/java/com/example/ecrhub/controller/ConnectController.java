@@ -5,9 +5,9 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.codepay.register.sdk.ECRHubClient;
 import com.codepay.register.sdk.ECRHubClientFactory;
-import com.codepay.register.sdk.device.ECRHubClientWebSocketService;
 import com.codepay.register.sdk.device.ECRHubDevice;
 import com.codepay.register.sdk.device.ECRHubDeviceEventListener;
+import com.codepay.register.sdk.device.ECRHubWebSocketDiscoveryService;
 import com.example.ecrhub.manager.ECRHubClientManager;
 import com.example.ecrhub.pojo.ECRHubClientPo;
 import com.example.ecrhub.util.ConfirmWindow;
@@ -106,7 +106,7 @@ public class ConnectController {
     }
 
     private boolean openListenerAction() {
-        ECRHubClientWebSocketService devicePairInstance = ECRHubClientWebSocketService.getInstance();
+        ECRHubWebSocketDiscoveryService devicePairInstance = ECRHubWebSocketDiscoveryService.getInstance();
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR!");
         // 开启监听
@@ -202,7 +202,7 @@ public class ConnectController {
     }
 
     private boolean closeListenerAction() {
-        ECRHubClientWebSocketService devicePairInstance = ECRHubClientWebSocketService.getInstance();
+        ECRHubWebSocketDiscoveryService devicePairInstance = ECRHubWebSocketDiscoveryService.getInstance();
         try {
             devicePairInstance.stop();
         } catch (Exception e) {
@@ -259,12 +259,12 @@ public class ConnectController {
 
     @FXML
     private void pairingButtonAction() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR!");
-        alert.setContentText("Unpaired device information does not exist!");
+        final Alert[] alert = {new Alert(Alert.AlertType.ERROR)};
+        alert[0].setTitle("ERROR!");
+        alert[0].setContentText("Unpaired device information does not exist!");
 
         if (StrUtil.isEmpty(pairing_device) || unpaired_list == null || unpaired_list.size() == 0) {
-            alert.showAndWait();
+            alert[0].showAndWait();
             return;
         }
 
@@ -273,10 +273,11 @@ public class ConnectController {
                 .findFirst().orElse(null);
 
         if (unpaired_device == null) {
-            alert.showAndWait();
+            alert[0].showAndWait();
             return;
         }
 
+        final ECRHubClient[] socketPortClient = new ECRHubClient[1];
         pairing_task = new Task<String>() {
             @Override
             protected String call() throws Exception {
@@ -287,25 +288,25 @@ public class ConnectController {
                 pairing_wait_vbox.setManaged(true);
                 unPairedList.setVisible(false);
                 unPairedList.setManaged(false);
-                ECRHubClient socketPortClient;
                 try {
-                    socketPortClient = ECRHubClientFactory.create(unpaired_device.getWs_address());
-                    socketPortClient.connect();
+                    socketPortClient[0] = ECRHubClientFactory.create(unpaired_device.getWs_address());
+                    socketPortClient[0].connect();
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                     throw e;
                 }
-                ECRHubClientPo clientPo = new ECRHubClientPo();
-                clientPo.setIs_connected(true);
-                clientPo.setDevice(unpaired_device);
-                clientPo.setClient(socketPortClient);
-                return JSON.toJSONString(clientPo);
+                JSONObject client_po = new JSONObject();
+                client_po.put("is_connected", true);
+                client_po.put("device", unpaired_device);
+                return JSON.toJSONString(client_po);
             }
         };
 
         pairing_task.setOnSucceeded(success -> {
-            String response_info = pairing_task.getValue();
-            ECRHubClientPo clientPo = JSONObject.parseObject(response_info, ECRHubClientPo.class);
+            ECRHubClientPo clientPo = new ECRHubClientPo();
+            clientPo.setIs_connected(true);
+            clientPo.setDevice(unpaired_device);
+            clientPo.setClient(socketPortClient[0]);
 
             pairing_wait_vbox.setVisible(false);
             pairing_wait_vbox.setManaged(false);
@@ -384,7 +385,7 @@ public class ConnectController {
                 pairedList.setVisible(false);
                 pairedList.setManaged(false);
 
-                ECRHubClientWebSocketService devicePairInstance = ECRHubClientWebSocketService.getInstance();
+                ECRHubWebSocketDiscoveryService devicePairInstance = ECRHubWebSocketDiscoveryService.getInstance();
                 devicePairInstance.unpair(clientPo.getDevice());
                 return null;
             }
@@ -485,7 +486,7 @@ public class ConnectController {
     public void getUnpairedInfo() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR!");
-        ECRHubClientWebSocketService clientWebSocketService = ECRHubClientWebSocketService.getInstance();
+        ECRHubWebSocketDiscoveryService clientWebSocketService = ECRHubWebSocketDiscoveryService.getInstance();
         if (!clientWebSocketService.isRunning()) {
             alert.setContentText("Please start listening!");
             alert.showAndWait();
@@ -523,7 +524,7 @@ public class ConnectController {
         });
     }
 
-    public void getPairedInfo(ECRHubClientWebSocketService clientWebSocketService) {
+    public void getPairedInfo(ECRHubWebSocketDiscoveryService clientWebSocketService) {
         LinkedHashMap<String, ECRHubClientPo> client_list = ECRHubClientManager.getInstance().getClient_list();
         List<ECRHubDevice> paired_list = clientWebSocketService.getPairedDeviceList();
         if (paired_list != null && paired_list.size() > 0) {
