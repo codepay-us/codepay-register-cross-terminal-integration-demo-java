@@ -53,8 +53,8 @@ public class ConnectController {
     @FXML
     private Button refreshButton;
 
-    @FXML
-    private Button pairedButton;
+//    @FXML
+//    private Button pairedButton;
 
     @FXML
     private Button unpairedButton;
@@ -282,7 +282,7 @@ public class ConnectController {
             @Override
             protected String call() throws Exception {
                 refreshButton.setDisable(true);
-                pairedButton.setDisable(true);
+//                pairedButton.setDisable(true);
 
                 pairing_wait_vbox.setVisible(true);
                 pairing_wait_vbox.setManaged(true);
@@ -518,10 +518,10 @@ public class ConnectController {
         unPairedList.getStylesheets().add(getClass().getResource("/com/example/ecrhub/css/style.css").toExternalForm());
 
         // 选中事件
-        unPairedList.getSelectionModel().selectedItemProperty().addListener((arg0, old_str, new_str) -> {
-            pairing_device = unPairedList.getSelectionModel().getSelectedItem();
-            pairedButton.setDisable(StrUtil.isEmpty(pairing_device));
-        });
+//        unPairedList.getSelectionModel().selectedItemProperty().addListener((arg0, old_str, new_str) -> {
+//            pairing_device = unPairedList.getSelectionModel().getSelectedItem();
+//            pairedButton.setDisable(StrUtil.isEmpty(pairing_device));
+//        });
     }
 
     public void getPairedInfo(ECRHubWebSocketDiscoveryService clientWebSocketService) {
