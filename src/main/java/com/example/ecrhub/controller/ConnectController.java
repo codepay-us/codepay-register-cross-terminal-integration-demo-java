@@ -56,8 +56,8 @@ public class ConnectController {
 //    @FXML
 //    private Button pairedButton;
 
-    @FXML
-    private Button unpairedButton;
+//    @FXML
+//    private Button unpairedButton;
 
     private String selected_device;
 
@@ -366,19 +366,20 @@ public class ConnectController {
         alert.setTitle("ERROR!");
         alert.setContentText("Paired device information does not exist!");
 
+        String device_sn = StrUtil.isEmpty(selected_device) ? null : selected_device.replace(" - Connected", "");
         LinkedHashMap<String, ECRHubClientPo> client_list = ECRHubClientManager.getInstance().getClient_list();
-        if (StrUtil.isEmpty(selected_device) || !client_list.containsKey(selected_device)) {
+        if (StrUtil.isEmpty(device_sn) || !client_list.containsKey(device_sn)) {
             alert.showAndWait();
             return;
         }
 
-        ECRHubClientPo clientPo = client_list.get(selected_device);
+        ECRHubClientPo clientPo = client_list.get(device_sn);
 
         unpairing_task = new Task<String>() {
             @Override
             protected String call() throws Exception {
                 connectButton.setDisable(true);
-                unpairedButton.setDisable(true);
+//                unpairedButton.setDisable(true);
 
                 unpairing_wait_vbox.setVisible(true);
                 unpairing_wait_vbox.setManaged(true);
@@ -471,10 +472,10 @@ public class ConnectController {
             if (StrUtil.isNotEmpty(selected_device)) {
                 connectButton.setDisable(false);
                 if (selected_device.contains("Unconnected")) {
-                    unpairedButton.setDisable(true);
+//                    unpairedButton.setDisable(true);
                     connectButton.setText("Connect");
                 } else {
-                    unpairedButton.setDisable(false);
+//                    unpairedButton.setDisable(false);
                     connectButton.setText("Disconnect");
                 }
             } else {
