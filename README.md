@@ -6,6 +6,27 @@ ECR-Hub Demo version 1.0.1 introduces three major features, enhancing the experi
 
 ## Running the ECR-Hub Demo
 
+- [Download Release](https://github.com/codepay-us/codepay-register-cross-terminal-integration-demo-java/releases/tag/v1.0.1)
+
+### Windows OS
+
+Double-click on [ECRHubDemo.bat]
+
+### Mac OS
+1. If you haven't already, set execution permissions for the script:
+
+    ```bash
+    chmod +x ECRHubDemo.sh
+    ```
+2. Run the script:
+
+    ```bash
+    ./ECRHubDemo.sh
+    ```
+3. The ECR-Hub Demo should start, and you will see the application window.
+
+4. To stop the ECR-Hub Demo, press [Enter] in the terminal window.
+
 ## New Features
 
 ### 1. Setting
@@ -41,7 +62,7 @@ ECR-Hub Demo version 1.0.1 introduces three major features, enhancing the experi
 
 ## Links
 
-- [Download this version](https://github.com/paycloud-open/ecrhub-client-demo-java/releases/tag/v1.0.0)
+- [Download this version](https://github.com/paycloud-open/ecrhub-client-demo-java/releases/tag/v1.0.1)
 - [Project documentation](https://github.com/paycloud-open/ecrhub-client-demo-java)
 
 Released on November 24, 2023
