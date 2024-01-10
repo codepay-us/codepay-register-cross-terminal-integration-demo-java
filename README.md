@@ -1,8 +1,10 @@
 # ECR-Hub Demo
 
-## Version 1.0.0
+## Version 1.0.1
 
-ECR-Hub Demo version 1.0.0 introduces three major features, enhancing the experience of device connection, demo demonstrations, and simulated transactions. Users can easily connect devices, perform demo debugging, and simulate transactions.
+ECR-Hub Demo version 1.0.1 introduces three major features, enhancing the experience of device connection, demo demonstrations, and simulated transactions. Users can easily connect devices, and simulate transactions.
+
+## Running the ECR-Hub Demo
 
 ## New Features
 
@@ -19,19 +21,11 @@ ECR-Hub Demo version 1.0.0 introduces three major features, enhancing the experi
 - The right side displays already paired devices with options to connect (`Connect`), disconnect (`Disconnect`), and unpair (`Unpairing`).
   ![img_5.png](imgs/img_5.png)
 
-### 2. Demo Demonstration
-
-- Connect via USB to perform demo demonstrations.
-- Select a transaction type on the left, fill in transaction parameters.
-- Click "Create Sample Message" to generate and display the sent message (Send Message) on the right.
-- Users can manually input the message and click "Send" to simulate sending a transaction request to the device.
-![img_3.png](imgs/img_3.png)
-
-### 3. Shopping
+### 2. Shopping
 
 - Connect the device to simulate transactions.
 - Choose products on the first screen, click "Charge" to enter the confirmation screen.
-![img_4.png](imgs/img_4.png)
+![img.png](imgs/img_4.png)
 - Select the device and transaction type, click "Submit" to trigger the device to send a request.
 ![img.png](imgs/img.png)
 - The transaction result is displayed in real-time on the screen.

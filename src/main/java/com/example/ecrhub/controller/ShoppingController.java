@@ -7,12 +7,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -80,10 +78,22 @@ public class ShoppingController {
 
             HBox priceBox = new HBox(5);
             priceBox.getChildren().addAll(nameLabel, priceLabel);
-            productBox.getChildren().addAll(imageView, priceBox);
+
+            // 商品数量
+            Label numLabel = new Label("x ");
+            TextField numField = createNumericField();
+            numField.setText("1");
+            numField.setMaxWidth(50);
+            numField.setAlignment(Pos.CENTER);
+
+            HBox numBox = new HBox(5);
+            numBox.getChildren().addAll(numLabel, numField);
+            numBox.setAlignment(Pos.CENTER_RIGHT);
+
+            productBox.getChildren().addAll(imageView, priceBox, numBox);
 
             // 商品点击事件
-            productBox.setOnMouseClicked(event -> addToCart(productName, productPrice));
+            productBox.setOnMouseClicked(event -> addToCart(productName, productPrice, numField.getText()));
 
             productGrid.add(productBox, col, row);
 
@@ -95,12 +105,12 @@ public class ShoppingController {
         }
     }
 
-    private void addToCart(String productName, String productPrice) {
-        String item = productName + " - $" + productPrice;
+    private void addToCart(String productName, String productPrice, String productNum) {
+        String item = productName + " - $" + productPrice + " x " + productNum;
         listView.getItems().add(item);
 
         String amount_str = amount.getText().replace("$", "");
-        BigDecimal total_amount = new BigDecimal(amount_str).add(new BigDecimal(productPrice));
+        BigDecimal total_amount = new BigDecimal(amount_str).add((new BigDecimal(productPrice).multiply(new BigDecimal(productNum))));
         amount.setText("$" + total_amount.setScale(2, RoundingMode.HALF_UP).toPlainString());
         PurchaseManager.getInstance().setTrans_amount(amount);
     }
@@ -142,5 +152,19 @@ public class ShoppingController {
 
         SceneManager.getInstance().loadScene("submit", "/com/example/ecrhub/fxml/submit.fxml");
         SceneManager.getInstance().switchScene("submit");
+    }
+
+    private TextField createNumericField() {
+        TextField textField = new TextField();
+
+        // 添加事件过滤器，只允许输入数字
+        textField.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            String character = event.getCharacter();
+            if (!character.matches("[0-9]")) {
+                event.consume(); // 阻止非数字字符的输入
+            }
+        });
+
+        return textField;
     }
 }
