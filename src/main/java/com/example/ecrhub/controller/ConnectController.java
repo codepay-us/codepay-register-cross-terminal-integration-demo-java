@@ -144,8 +144,7 @@ public class ConnectController {
                 public boolean onPaired(ECRHubDevice ecrHubDevice) {
                     String terminal_sn = ecrHubDevice.getTerminal_sn();
                     String content = "Device sn: \n    [" + terminal_sn + "]\n request connection";
-                    boolean is_confirm = new ConfirmWindow().open("Connection confirmed", content);
-                    if (is_confirm) {
+                    if (new ConfirmWindow().open("Connection confirmed", content)) {
                         try {
                             ECRHubClient socketPortClient = ECRHubClientFactory.create(ecrHubDevice.getWs_address());
                             socketPortClient.connect();
@@ -154,10 +153,7 @@ public class ConnectController {
                             clientPo.setDevice(ecrHubDevice);
                             clientPo.setClient(socketPortClient);
                             ECRHubClientManager.getInstance().getClient_list().put(terminal_sn, clientPo);
-                            Platform.runLater(() -> {
-                                getUnpairedInfo();
-                                getConnectInfo();
-                            });
+                            return true;
                         } catch (Exception e) {
                             e.printStackTrace();
                             Platform.runLater(() -> {
@@ -165,9 +161,14 @@ public class ConnectController {
                                 alert.showAndWait();
                             });
                             return false;
+                        } finally {
+                            Platform.runLater(() -> {
+                                getUnpairedInfo();
+                                getConnectInfo();
+                            });
                         }
                     }
-                    return is_confirm;
+                    return false;
                 }
 
                 @Override
