@@ -154,8 +154,10 @@ public class ConnectController {
                             clientPo.setDevice(ecrHubDevice);
                             clientPo.setClient(socketPortClient);
                             ECRHubClientManager.getInstance().getClient_list().put(terminal_sn, clientPo);
-                            getUnpairedInfo();
-                            getConnectInfo();
+                            Platform.runLater(() -> {
+                                getUnpairedInfo();
+                                getConnectInfo();
+                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                             Platform.runLater(() -> {
@@ -172,8 +174,10 @@ public class ConnectController {
                 public void onUnpaired(ECRHubDevice ecrHubDevice) {
                     String terminal_sn = ecrHubDevice.getTerminal_sn();
                     ECRHubClientManager.getInstance().getClient_list().remove(terminal_sn);
-                    getUnpairedInfo();
-                    getConnectInfo();
+                    Platform.runLater(() -> {
+                        getUnpairedInfo();
+                        getConnectInfo();
+                    });
                 }
 
                 @Override
@@ -185,8 +189,10 @@ public class ConnectController {
                         if (clientPo.isIs_connected()) {
                             clientPo.setIs_connected(false);
                             client_list.put(terminal_sn, clientPo);
-                            getUnpairedInfo();
-                            getConnectInfo();
+                            Platform.runLater(() -> {
+                                getUnpairedInfo();
+                                getConnectInfo();
+                            });
                         }
                     }
                 }
@@ -490,10 +496,10 @@ public class ConnectController {
     }
 
     public void getUnpairedInfo() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR!");
         ECRHubWebSocketDiscoveryService clientWebSocketService = ECRHubWebSocketDiscoveryService.getInstance();
         if (!clientWebSocketService.isRunning()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR!");
             alert.setContentText("Please start listening!");
             alert.showAndWait();
             return;
@@ -501,6 +507,7 @@ public class ConnectController {
 
         unpaired_list = clientWebSocketService.getUnpairedDeviceList();
         if (unpaired_list == null || unpaired_list.size() == 0) {
+            unPairedList.setItems(null);
             return;
         }
 
