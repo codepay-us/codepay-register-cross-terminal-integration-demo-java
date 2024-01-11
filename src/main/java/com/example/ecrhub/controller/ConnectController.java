@@ -493,6 +493,7 @@ public class ConnectController {
                     connectButton.setText("Disconnect");
                 }
             } else {
+                unpairedButton.setDisable(true);
                 connectButton.setDisable(true);
             }
         });
