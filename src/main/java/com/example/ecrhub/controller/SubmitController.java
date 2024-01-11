@@ -95,16 +95,16 @@ public class SubmitController {
         } else {
             trans_amount.setText(PurchaseManager.getInstance().getTrans_amount().getText());
         }
-        pay_method_category_choice.getItems().addAll("SWIPE_CARD", "SCANQR_PAY", "BSCANQR_PAY");
-        pay_method_category_choice.setValue("SWIPE_CARD");
+        pay_method_category_choice.getItems().addAll("Bank card payment", "Customer Scan QR Pay", "Merchant Scan QR Pay");
+        pay_method_category_choice.setValue("Bank card payment");
 
         pay_method_id_choice.getItems().addAll("PAYNOW", "Alipay", "Smart Ví", "Alipay+", "WecatPay");
         pay_method_id_choice.setValue("PAYNOW");
 
         // 添加监听器
         pay_method_category_choice.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if ("SCANQR_PAY".equals(newValue)) {
-                // 当值为"SCANQR_PAY"时，显示pay_method_id_choice
+            if ("Customer Scan QR Pay".equals(newValue)) {
+                // 当值为"Customer Scan QR Pay"时，显示pay_method_id_choice
                 pay_method.setVisible(true);
                 pay_method.setManaged(true);
             } else {
@@ -259,7 +259,7 @@ public class SubmitController {
         request.setApp_id(CommonConstant.APP_ID);
         request.setMerchant_order_no("DEMO" + new Date().getTime() + RandomUtil.randomNumbers(4));
         request.setOrder_amount(amount_str);
-        request.setPay_scenario(pay_method_category_choice.getValue());
+        request.setPay_scenario(getPayScenario(pay_method_category_choice.getValue()));
         ECRHubConfig requestConfig = new ECRHubConfig();
         requestConfig.getSerialPortConfig().setReadTimeout(150000);
         request.setConfig(requestConfig);
@@ -283,4 +283,12 @@ public class SubmitController {
         }
     }
 
+    private static String getPayScenario(String pay_method_category) {
+        switch (pay_method_category) {
+            case "Bank card payment": return "SWIPE_CARD";
+            case "Customer Scan QR Pay": return "SCANQR_PAY";
+            case "Merchant Scan QR Pay": return "BSCANQR_PAY";
+            default: return "UNKNOWN";
+        }
+    }
 }
