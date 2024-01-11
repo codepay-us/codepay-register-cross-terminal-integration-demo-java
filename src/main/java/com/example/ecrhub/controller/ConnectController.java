@@ -88,7 +88,7 @@ public class ConnectController {
 
             @Override
             public boolean buttonOnAction() {
-                return openListenerAction();
+                return openListenerAction(true);
             }
         };
         switch_hbox.getChildren().add(switch_button);
@@ -97,7 +97,7 @@ public class ConnectController {
         if (instance.isOpen_listener()) {
             // 已连接
             refreshButton.setDisable(false);
-            getUnpairedInfo();
+            openListenerAction(false);
         } else {
             // 未连接
             refreshButton.setDisable(true);
@@ -105,7 +105,7 @@ public class ConnectController {
         getConnectInfo();
     }
 
-    private boolean openListenerAction() {
+    private boolean openListenerAction(boolean getPairedInfo) {
         ECRHubWebSocketDiscoveryService devicePairInstance = ECRHubWebSocketDiscoveryService.getInstance();
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR!");
@@ -114,7 +114,9 @@ public class ConnectController {
             devicePairInstance.start();
             // 查询已配对/未配对设备
             getUnpairedInfo();
-            getPairedInfo(devicePairInstance);
+            if (getPairedInfo) {
+                getPairedInfo(devicePairInstance);
+            }
             devicePairInstance.setDeviceEventListener(new ECRHubDeviceEventListener() {
                 @Override
                 public void onAdded(ECRHubDevice ecrHubDevice) {
