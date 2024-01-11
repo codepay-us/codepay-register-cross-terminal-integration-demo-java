@@ -3,6 +3,7 @@ package com.example.ecrhub.controller;
 import com.example.ecrhub.manager.ECRHubClientManager;
 import com.example.ecrhub.manager.PurchaseManager;
 import com.example.ecrhub.manager.SceneManager;
+import com.example.ecrhub.pojo.ECRHubClientPo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.LinkedHashMap;
 
 /**
  * @author: yanzx
@@ -148,6 +150,23 @@ public class ShoppingController {
             alert.setContentText("Please connect the device!");
             alert.showAndWait();
             return;
+        } else if (2 == ECRHubClientManager.getInstance().getConnectType()) {
+            boolean have_connected = false;
+            LinkedHashMap<String, ECRHubClientPo> client_list = ECRHubClientManager.getInstance().getClient_list();
+            if (!client_list.isEmpty()) {
+                for (String key : client_list.keySet()) {
+                    ECRHubClientPo client_info = client_list.get(key);
+                    if (client_info.isIs_connected()) {
+                        have_connected = true;
+                        break;
+                    }
+                }
+                if (!have_connected) {
+                    alert.setContentText("Device is not connected!");
+                    alert.showAndWait();
+                    return;
+                }
+            }
         }
 
         SceneManager.getInstance().loadScene("submit", "/com/example/ecrhub/fxml/submit.fxml");

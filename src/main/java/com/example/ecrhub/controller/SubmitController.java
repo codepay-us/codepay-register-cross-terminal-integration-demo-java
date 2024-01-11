@@ -78,12 +78,6 @@ public class SubmitController {
                     terminalBox.getItems().add(key);
                 }
             }
-            if (terminalBox.getItems().size() == 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ERROR!");
-                alert.setContentText("Device is not connected!");
-                alert.showAndWait();
-            }
             terminalBox.setValue(terminalBox.getItems().get(0));
             terminal_sn.setVisible(false);
             terminal_sn.setManaged(false);

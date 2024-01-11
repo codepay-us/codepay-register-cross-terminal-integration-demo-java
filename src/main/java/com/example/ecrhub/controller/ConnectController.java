@@ -56,8 +56,8 @@ public class ConnectController {
 //    @FXML
 //    private Button pairedButton;
 
-//    @FXML
-//    private Button unpairedButton;
+    @FXML
+    private Button unpairedButton;
 
     private String selected_device;
 
@@ -134,6 +134,7 @@ public class ConnectController {
                         }
                         client_list.put(terminal_sn, clientPo);
                         Platform.runLater(() -> {
+                            getUnpairedInfo();
                             getConnectInfo();
                         });
                     }
@@ -153,6 +154,7 @@ public class ConnectController {
                             clientPo.setDevice(ecrHubDevice);
                             clientPo.setClient(socketPortClient);
                             ECRHubClientManager.getInstance().getClient_list().put(terminal_sn, clientPo);
+                            getUnpairedInfo();
                             getConnectInfo();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -170,6 +172,7 @@ public class ConnectController {
                 public void onUnpaired(ECRHubDevice ecrHubDevice) {
                     String terminal_sn = ecrHubDevice.getTerminal_sn();
                     ECRHubClientManager.getInstance().getClient_list().remove(terminal_sn);
+                    getUnpairedInfo();
                     getConnectInfo();
                 }
 
@@ -182,6 +185,7 @@ public class ConnectController {
                         if (clientPo.isIs_connected()) {
                             clientPo.setIs_connected(false);
                             client_list.put(terminal_sn, clientPo);
+                            getUnpairedInfo();
                             getConnectInfo();
                         }
                     }
@@ -197,6 +201,7 @@ public class ConnectController {
 
         ECRHubClientManager.getInstance().setOpen_listener(true);
         refreshButton.setDisable(false);
+        getUnpairedInfo();
         getConnectInfo();
         return true;
     }
@@ -379,7 +384,7 @@ public class ConnectController {
             @Override
             protected String call() throws Exception {
                 connectButton.setDisable(true);
-//                unpairedButton.setDisable(true);
+                unpairedButton.setDisable(true);
 
                 unpairing_wait_vbox.setVisible(true);
                 unpairing_wait_vbox.setManaged(true);
@@ -472,10 +477,10 @@ public class ConnectController {
             if (StrUtil.isNotEmpty(selected_device)) {
                 connectButton.setDisable(false);
                 if (selected_device.contains("Unconnected")) {
-//                    unpairedButton.setDisable(true);
+                    unpairedButton.setDisable(true);
                     connectButton.setText("Connect");
                 } else {
-//                    unpairedButton.setDisable(false);
+                    unpairedButton.setDisable(false);
                     connectButton.setText("Disconnect");
                 }
             } else {

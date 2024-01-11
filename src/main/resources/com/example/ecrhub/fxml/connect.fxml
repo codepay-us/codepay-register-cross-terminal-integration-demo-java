@@ -32,7 +32,7 @@
             <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                 <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
                     <Button mnemonicParsing="false" text="Disconnect" fx:id="connectButton" disable="true" onAction="#onDisconnectAction"/>
-<!--                    <Button mnemonicParsing="false" text="Unpairing" fx:id="unpairedButton" disable="true" onAction="#unpairingButtonAction"/>-->
+                    <Button mnemonicParsing="false" text="Unpairing" fx:id="unpairedButton" disable="true" onAction="#unpairingButtonAction"/>
                 </HBox>
                 <HBox alignment="CENTER_LEFT">
                     <Label text="Paired Devices :" />
