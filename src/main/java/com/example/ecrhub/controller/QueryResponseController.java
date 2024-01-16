@@ -35,14 +35,35 @@ public class QueryResponseController {
     public TextField merchant_order_no;
     public TextArea response_info;
     private Task<String> task = null;
+    @FXML
+    private Label terminal_sn;
+
     public ChoiceBox<String> terminalBox;
+
     @FXML
     private Label wait_label;
     @FXML
     private ProgressIndicator progress_indicator;
 
     public void initialize() {
-
+        ECRHubClientManager instance = ECRHubClientManager.getInstance();
+        if (1 == instance.getConnectType()) {
+            // 串口连接初始化页面
+            terminalBox.setVisible(false);
+            terminalBox.setManaged(false);
+        } else {
+            // WLAN 连接初始化页面
+            LinkedHashMap<String, ECRHubClientPo> client_list = instance.getClient_list();
+            for (String key : client_list.keySet()) {
+                ECRHubClientPo client_info = client_list.get(key);
+                if (client_info.isIs_connected()) {
+                    terminalBox.getItems().add(key);
+                }
+            }
+            terminalBox.setValue(terminalBox.getItems().get(0));
+            terminal_sn.setVisible(false);
+            terminal_sn.setManaged(false);
+        }
         QueryResponse queryResponse = PurchaseManager.getInstance().getQueryResponse();
 //        QueryRequest queryRequest = PurchaseManager.getInstance().getQueryRequest();
         if (queryResponse != null){

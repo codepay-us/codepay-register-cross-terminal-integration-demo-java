@@ -17,12 +17,12 @@
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
             <Label alignment="CENTER_RIGHT" minWidth="180" text="Device sn: " />
-            <Label fx:id="terminal_sn" prefHeight="26.0" prefWidth="200.0">
+            <Label fx:id="terminal_sn" prefHeight="26.0" prefWidth="400.0">
                 <font>
                     <Font size="20.0" />
                 </font>
             </Label>
-            <ChoiceBox fx:id="terminalBox" prefWidth="150.0"/>
+            <ChoiceBox fx:id="terminalBox" prefWidth="200.0"/>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
             <Label alignment="CENTER_RIGHT" minWidth="180" text="Trans Amount: " />
@@ -32,13 +32,13 @@
                 </font>
             </TextField>
         </HBox>
-        <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
             <Label alignment="CENTER_RIGHT" minWidth="180" text="Payment method category: "/>
-            <ChoiceBox fx:id="pay_method_category_choice" minWidth="100.0" />
+            <ChoiceBox fx:id="pay_method_category_choice" prefHeight="26.0" prefWidth="200.0"/>
         </HBox>
-        <HBox fx:id="pay_method"  visible="false" alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER_LEFT">
+        <HBox fx:id="pay_method"  visible="false" alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
             <Label alignment="CENTER_RIGHT" minWidth="180" text="Payment method id: "/>
-            <ChoiceBox fx:id="pay_method_id_choice"  minWidth="100.0" />
+            <ChoiceBox fx:id="pay_method_id_choice"  prefHeight="26.0" prefWidth="200.0"/>
         </HBox>
         <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
             <ProgressIndicator  fx:id="progress_indicator" />

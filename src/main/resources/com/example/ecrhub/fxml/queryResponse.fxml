@@ -14,6 +14,11 @@
             <TextField fx:id="merchant_order_no" prefHeight="26.0" prefWidth="400.0" />
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
+            <Label minWidth="150" text="Device sn: " />
+            <Label fx:id="terminal_sn" prefHeight="26.0" prefWidth="400.0" />
+            <ChoiceBox fx:id="terminalBox" prefWidth="200.0"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER_LEFT">
             <Label minWidth="150" text="Trans Amount: " />
             <TextField fx:id="trans_amount" disable="true" prefHeight="26.0" prefWidth="200.0" />
         </HBox>

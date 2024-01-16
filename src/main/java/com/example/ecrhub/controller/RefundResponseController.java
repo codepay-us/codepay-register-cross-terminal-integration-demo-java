@@ -28,6 +28,8 @@ public class RefundResponseController {
     public Button refundButton;
     public TextField orig_merchant_order_no;
     @FXML
+    private Label terminal_sn;
+    @FXML
     private Button returnButton;
     public TextField trans_amount;
 
@@ -43,6 +45,24 @@ public class RefundResponseController {
     public ChoiceBox<String> terminalBox;
 
     public void initialize() {
+        ECRHubClientManager instance = ECRHubClientManager.getInstance();
+        if (1 == instance.getConnectType()) {
+            // 串口连接初始化页面
+            terminalBox.setVisible(false);
+            terminalBox.setManaged(false);
+        } else {
+            // WLAN 连接初始化页面
+            LinkedHashMap<String, ECRHubClientPo> client_list = instance.getClient_list();
+            for (String key : client_list.keySet()) {
+                ECRHubClientPo client_info = client_list.get(key);
+                if (client_info.isIs_connected()) {
+                    terminalBox.getItems().add(key);
+                }
+            }
+            terminalBox.setValue(terminalBox.getItems().get(0));
+            terminal_sn.setVisible(false);
+            terminal_sn.setManaged(false);
+        }
         RefundResponse refundResponse = PurchaseManager.getInstance().getRefundResponse();
         orig_merchant_order_no.setText(null);
         merchant_order_no.setText(null);
@@ -146,8 +166,13 @@ public class RefundResponseController {
         if (merchant_order_no.getText() != null) {
             MerchantOrderNo = merchant_order_no.getText();
         }
+
         RefundRequest request = new RefundRequest();
         request.setApp_id(CommonConstant.APP_ID);
+        if (trans_amount.getText() != null) {
+            String amt = trans_amount.getText();
+            request.setOrder_amount(amt);
+        }
         request.setOrig_merchant_order_no(origMerchantOrderNo);
         request.setMerchant_order_no(MerchantOrderNo);
         return request;
