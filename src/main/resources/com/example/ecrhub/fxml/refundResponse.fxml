@@ -41,6 +41,7 @@
         <HBox alignment="BOTTOM_CENTER" spacing="20.0" BorderPane.alignment="BOTTOM_CENTER">
             <Button fx:id="returnButton" mnemonicParsing="false" onAction="#refundReturnButtonAction" text="Back" />
             <Button fx:id="refundButton" mnemonicParsing="false" onAction="#handleRefundButtonAction" text="Refund" />
+            <Button fx:id="voidButton" mnemonicParsing="false" onAction="#handleVoidButtonAction" text="Void" />
         </HBox>
     </children>
 </VBox>

@@ -16,7 +16,7 @@
                     </padding>
                     <Button mnemonicParsing="false" onAction="#handleReturnButtonAction" text="Back" />
                     <Button fx:id="queryResponse" mnemonicParsing="false" onAction="#handleQueryButtonAction" text="Query" />
-                    <Button fx:id="refundResponse" mnemonicParsing="false" onAction="#handleRefundButtonAction" text="Refund" />
+                    <Button fx:id="refundResponse" mnemonicParsing="false" onAction="#handleRefundButtonAction" text="Refund/Void" />
                 </HBox>
             </VBox>
         </left>

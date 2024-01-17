@@ -2,10 +2,7 @@ package com.example.ecrhub.manager;
 
 
 import com.codepay.register.sdk.model.request.QueryRequest;
-import com.codepay.register.sdk.model.response.CloseResponse;
-import com.codepay.register.sdk.model.response.SaleResponse;
-import com.codepay.register.sdk.model.response.QueryResponse;
-import com.codepay.register.sdk.model.response.RefundResponse;
+import com.codepay.register.sdk.model.response.*;
 import javafx.scene.control.Label;
 
 /**
@@ -27,6 +24,9 @@ public class PurchaseManager {
     private QueryRequest queryRequest;
 
     private RefundResponse refundResponse;
+
+    private VoidResponse voidResponse;
+
 
     private CloseResponse closeResponse;
 
@@ -55,6 +55,14 @@ public class PurchaseManager {
 
     public void setRefundResponse(RefundResponse refundResponse) {
         this.refundResponse = refundResponse;
+    }
+
+    public VoidResponse getVoidResponse() {
+        return voidResponse;
+    }
+
+    public void setVoidResponse(VoidResponse voidResponse) {
+        this.voidResponse = voidResponse;
     }
 
     public QueryResponse getQueryResponse() {

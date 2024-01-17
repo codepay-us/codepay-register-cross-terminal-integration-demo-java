@@ -129,9 +129,13 @@ public class ShoppingController {
         SceneManager.getInstance().switchScene("refundResponse");
     }
 
+    public void handleVoidButtonAction(ActionEvent actionEvent) {
+        SceneManager.getInstance().loadScene("voidResponse", "/com/example/ecrhub/fxml/voidResponse.fxml");
+        SceneManager.getInstance().switchScene("voidResponse");
+    }
+
     @FXML
     private void handleQueryButtonAction(ActionEvent event) {
-
         SceneManager.getInstance().loadScene("queryResponse", "/com/example/ecrhub/fxml/queryResponse.fxml");
         SceneManager.getInstance().switchScene("queryResponse");
     }
@@ -186,4 +190,6 @@ public class ShoppingController {
 
         return textField;
     }
+
+
 }

@@ -4,7 +4,9 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.codepay.register.sdk.ECRHubClient;
 import com.codepay.register.sdk.model.request.RefundRequest;
+import com.codepay.register.sdk.model.request.VoidRequest;
 import com.codepay.register.sdk.model.response.RefundResponse;
+import com.codepay.register.sdk.model.response.VoidResponse;
 import com.example.ecrhub.constant.CommonConstant;
 import com.example.ecrhub.manager.ECRHubClientManager;
 import com.example.ecrhub.manager.PurchaseManager;
@@ -26,6 +28,7 @@ import java.util.*;
 public class RefundResponseController {
 
     public Button refundButton;
+    public Button voidButton;
     public TextField orig_merchant_order_no;
     @FXML
     private Label terminal_sn;
@@ -64,6 +67,7 @@ public class RefundResponseController {
             terminal_sn.setManaged(false);
         }
         RefundResponse refundResponse = PurchaseManager.getInstance().getRefundResponse();
+        VoidResponse voidResponse = PurchaseManager.getInstance().getVoidResponse();
         orig_merchant_order_no.setText(null);
         merchant_order_no.setText(null);
         response_info.setText(null);
@@ -72,6 +76,10 @@ public class RefundResponseController {
             trans_amount.setText(refundResponse.getOrder_amount());
             orig_merchant_order_no.setText(refundResponse.getMerchant_order_no());
             response_info.setText(JSONFormatUtil.formatJson(refundResponse));
+        } else if (voidResponse != null) {
+            trans_amount.setText(voidResponse.getOrder_amount());
+            orig_merchant_order_no.setText(voidResponse.getMerchant_order_no());
+            response_info.setText(JSONFormatUtil.formatJson(voidResponse));
         }
     }
 
@@ -102,6 +110,7 @@ public class RefundResponseController {
                 progress_indicator.setVisible(true);
                 wait_label.setVisible(true);
                 refundButton.setDisable(true);
+                voidButton.setDisable(true);
                 PurchaseManager.getInstance().setRefundResponse(refund());
                 return "success";
             }
@@ -111,6 +120,7 @@ public class RefundResponseController {
             progress_indicator.setVisible(false);
             wait_label.setVisible(false);
             refundButton.setDisable(false);
+            voidButton.setDisable(false);
             SceneManager.getInstance().loadScene("refundResponse", "/com/example/ecrhub/fxml/refundResponse.fxml");
             SceneManager.getInstance().switchScene("refundResponse");
         });
@@ -119,6 +129,7 @@ public class RefundResponseController {
             progress_indicator.setVisible(false);
             wait_label.setVisible(false);
             refundButton.setDisable(false);
+            voidButton.setDisable(false);
             alert.setContentText("connect error!");
             alert.showAndWait();
         });
@@ -127,6 +138,7 @@ public class RefundResponseController {
             progress_indicator.setVisible(false);
             wait_label.setVisible(false);
             refundButton.setDisable(false);
+            voidButton.setDisable(false);
             PurchaseManager.getInstance().setRefundResponse(null);
         });
 
@@ -166,7 +178,6 @@ public class RefundResponseController {
         if (merchant_order_no.getText() != null) {
             MerchantOrderNo = merchant_order_no.getText();
         }
-
         RefundRequest request = new RefundRequest();
         request.setApp_id(CommonConstant.APP_ID);
         if (trans_amount.getText() != null) {
@@ -178,4 +189,93 @@ public class RefundResponseController {
         return request;
     }
 
+    public void handleVoidButtonAction(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR!");
+        String origMerchantOrderNo = orig_merchant_order_no.getText();
+        if (StrUtil.isEmpty(origMerchantOrderNo)) {
+            alert.setContentText("Please enter orig_merchant_order_no");
+            alert.showAndWait();
+            return;
+        }
+
+        task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                progress_indicator.setVisible(true);
+                wait_label.setVisible(true);
+                refundButton.setDisable(true);
+                voidButton.setDisable(true);
+                PurchaseManager.getInstance().setVoidResponse(Cancel());
+                return "success";
+            }
+        };
+
+        task.setOnSucceeded(success -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            refundButton.setDisable(false);
+            voidButton.setDisable(false);
+            SceneManager.getInstance().loadScene("voidResponse", "/com/example/ecrhub/fxml/refundResponse.fxml");
+            SceneManager.getInstance().switchScene("voidResponse");
+        });
+
+        task.setOnFailed(fail -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            refundButton.setDisable(false);
+            voidButton.setDisable(false);
+            alert.setContentText("connect error!");
+            alert.showAndWait();
+        });
+
+        task.setOnCancelled(cancel -> {
+            progress_indicator.setVisible(false);
+            wait_label.setVisible(false);
+            refundButton.setDisable(false);
+            voidButton.setDisable(false);
+            PurchaseManager.getInstance().setVoidResponse(null);
+        });
+
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+    private VoidResponse Cancel() throws Exception {
+        ECRHubClientManager instance = ECRHubClientManager.getInstance();
+        ECRHubClient client;
+
+        if (1 == instance.getConnectType()) {
+            client = instance.getClient();
+        } else {
+            LinkedHashMap<String, ECRHubClientPo> clientList = instance.getClient_list();
+            client = clientList.get(terminalBox.getValue()).getClient();
+        }
+        String[] origMerchantOrderNumbers = orig_merchant_order_no.getText().split(",");
+        System.out.println(Arrays.toString(origMerchantOrderNumbers));
+
+        List<VoidResponse> voidResponses = new ArrayList<>();
+
+        for (String origMerchantOrderNo : origMerchantOrderNumbers) {
+            VoidRequest request = createVoidRequest(origMerchantOrderNo);
+            System.out.println("Void request:" + request);
+            VoidResponse voidResponse = client.execute(request);
+            System.out.println("Void response:" + voidResponse);
+            voidResponses.add(voidResponse);
+        }
+        return voidResponses.isEmpty() ? null : voidResponses.get(voidResponses.size() - 1);
+
+    }
+
+    private VoidRequest createVoidRequest(String origMerchantOrderNo) {
+        String MerchantOrderNo = "C" + origMerchantOrderNo;
+        if (merchant_order_no.getText() != null) {
+            MerchantOrderNo = merchant_order_no.getText();
+        }
+        VoidRequest request = new VoidRequest();
+        request.setApp_id(CommonConstant.APP_ID);
+        request.setOrig_merchant_order_no(origMerchantOrderNo);
+        request.setMerchant_order_no(MerchantOrderNo);
+        return request;
+    }
 }
