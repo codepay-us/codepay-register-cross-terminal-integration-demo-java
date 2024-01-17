@@ -89,6 +89,7 @@ public class RefundResponseController {
             task.cancel();
         }
         PurchaseManager.getInstance().setRefundResponse(null);
+        PurchaseManager.getInstance().setVoidResponse(null);
         SceneManager.getInstance().loadScene("shopping", "/com/example/ecrhub/fxml/shopping.fxml");
         SceneManager.getInstance().switchScene("shopping");
     }
@@ -140,6 +141,7 @@ public class RefundResponseController {
             refundButton.setDisable(false);
             voidButton.setDisable(false);
             PurchaseManager.getInstance().setRefundResponse(null);
+            PurchaseManager.getInstance().setVoidResponse(null);
         });
 
         Thread thread = new Thread(task);
@@ -235,6 +237,7 @@ public class RefundResponseController {
             refundButton.setDisable(false);
             voidButton.setDisable(false);
             PurchaseManager.getInstance().setVoidResponse(null);
+            PurchaseManager.getInstance().setRefundResponse(null);
         });
 
         Thread thread = new Thread(task);
