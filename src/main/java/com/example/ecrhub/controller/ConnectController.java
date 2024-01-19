@@ -122,7 +122,7 @@ public class ConnectController {
                 public void onAdded(ECRHubDevice ecrHubDevice) {
                     LinkedHashMap<String, ECRHubClientPo> client_list = ECRHubClientManager.getInstance().getClient_list();
                     String terminal_sn = ecrHubDevice.getTerminal_sn();
-                    if (client_list.containsKey(terminal_sn) && !client_list.get(terminal_sn).isIs_connected()) {
+                    if (client_list.containsKey(terminal_sn)) {
                         ECRHubClientPo clientPo = new ECRHubClientPo();
                         clientPo.setIs_connected(false);
                         clientPo.setDevice(ecrHubDevice);
