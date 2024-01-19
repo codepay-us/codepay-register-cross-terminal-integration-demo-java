@@ -453,6 +453,13 @@ public class ConnectController {
         List<String> device_info = new ArrayList<>();
         for (String key : client_list.keySet()) {
             ECRHubClientPo clientPo = client_list.get(key);
+            if (clientPo.getClient() != null) {
+                try {
+                    clientPo.setIs_connected(clientPo.getClient().isConnected());
+                } catch (Exception e) {
+
+                }
+            }
             device_info.add(key + " - " + (clientPo.isIs_connected() ? "Connected" : "Unconnected"));
         }
         ObservableList connectDevices = FXCollections.observableArrayList(device_info);
