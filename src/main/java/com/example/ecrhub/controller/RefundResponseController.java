@@ -112,6 +112,7 @@ public class RefundResponseController {
                 wait_label.setVisible(true);
                 refundButton.setDisable(true);
                 voidButton.setDisable(true);
+                PurchaseManager.getInstance().setVoidResponse(null);
                 PurchaseManager.getInstance().setRefundResponse(refund());
                 return "success";
             }
@@ -176,7 +177,8 @@ public class RefundResponseController {
     }
 
     private RefundRequest createRefundRequest(String origMerchantOrderNo) {
-        String MerchantOrderNo = "C" + origMerchantOrderNo;
+        String MerchantOrderNo = "R" + origMerchantOrderNo + RandomUtil.randomNumbers(4);
+//        String MerchantOrderNo = "C" + RandomUtil.randomNumbers(4);
         if (merchant_order_no.getText() != null) {
             MerchantOrderNo = merchant_order_no.getText();
         }
@@ -208,6 +210,7 @@ public class RefundResponseController {
                 wait_label.setVisible(true);
                 refundButton.setDisable(true);
                 voidButton.setDisable(true);
+                PurchaseManager.getInstance().setRefundResponse(null);
                 PurchaseManager.getInstance().setVoidResponse(Cancel());
                 return "success";
             }
@@ -271,7 +274,7 @@ public class RefundResponseController {
     }
 
     private VoidRequest createVoidRequest(String origMerchantOrderNo) {
-        String MerchantOrderNo = "C" + origMerchantOrderNo;
+        String MerchantOrderNo = "V" + origMerchantOrderNo + RandomUtil.randomNumbers(4);
         if (merchant_order_no.getText() != null) {
             MerchantOrderNo = merchant_order_no.getText();
         }
