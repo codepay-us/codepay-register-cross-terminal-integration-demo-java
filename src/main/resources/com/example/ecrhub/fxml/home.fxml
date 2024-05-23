@@ -31,6 +31,6 @@
     </children>
     <AnchorPane VBox.vgrow="NEVER">
         <!-- 底部标注 -->
-        <Label text="Wiseasy ver 1.01" AnchorPane.bottomAnchor="-170.0" AnchorPane.leftAnchor="410.0" alignment="CENTER" style="-fx-text-fill: gray;"/>
+        <Label text="CodePay ver 1.01" AnchorPane.bottomAnchor="-170.0" AnchorPane.leftAnchor="410.0" alignment="CENTER" style="-fx-text-fill: gray;"/>
     </AnchorPane>
 </VBox>
